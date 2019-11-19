@@ -11,24 +11,19 @@ const pressReducer = (state, action) => {
   switch (action.type) {
     case "LOADING":
       return {
+        ...state,
         loading: true,
-        data: null,
-        error: null,
-        showData: null
       };
     case "SUCCESS":
       return {
+        ...state,
         loading: false,
         data: action.data,
-        error: null, 
-        showData: null,
       };
     case "ERROR":
       return {
-        loading: false,
-        data: null,
+        ...state,
         error: action.error,
-        showData: null
       };
     case "CHANGE":
       return {
@@ -48,7 +43,8 @@ export const PressProvider = ({ children }) => {
   const [state, dispatch] = useReducer(pressReducer, {
     loading: false,
     data: null,
-    error: null
+    error: null,
+    showData: null,
   });
 
   const fetchData = () => {

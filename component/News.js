@@ -63,6 +63,7 @@ const News = () => {
     bottom: 1rem;
     background-color: rgb(0, 0, 0, 0.7);
     color: white;
+    text-align: center;
   `;
   const NewsListSection = styled.ul`
     display: flex;
