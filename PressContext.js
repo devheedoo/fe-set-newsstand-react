@@ -13,24 +13,28 @@ const pressReducer = (state, action) => {
       return {
         loading: true,
         data: null,
-        error: null
+        error: null,
+        showData: null
       };
     case "SUCCESS":
       return {
         loading: false,
         data: action.data,
-        error: null
+        error: null, 
+        showData: null,
       };
     case "ERROR":
       return {
         loading: false,
         data: null,
-        error: action.error
+        error: action.error,
+        showData: null
       };
     case "CHANGE":
-      return state.filter(press => press.id === action.id);
-    case "MOVE":
-      return state[nextId];
+      return {
+        ...state,
+        showData: state.data[action.index],
+      }
     default:
       throw new Error(`unhandled action type : ${action.type}`);
   }
@@ -64,7 +68,7 @@ export const PressProvider = ({ children }) => {
   }, []);
 
   const nextId = useRef(1);
-  const { loading, data: pressData, error } = state;
+  const { loading, data: pressData, error, showData} = state;
 
   if (loading) return <div>로딩중</div>
   if (error) return <div> 에러 </div>

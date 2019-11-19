@@ -1,6 +1,6 @@
 import React from "react";
 import styled from "styled-components";
-import { usePressState } from "../PressContext";
+import { usePressState, usePressDispatch } from "../PressContext";
 
 const Press = () => {
   const PressContainer = styled.ul`
@@ -16,15 +16,19 @@ const Press = () => {
 
   const PressItem = styled.li`
     margin-top: 4px;
+    cursor: pointer;
   `
 
   const pressList = usePressState().data;
+  const dispatch = usePressDispatch();
+
+  const onChange = (index) => dispatch({ type: "CHANGE", index });
 
   if (pressList.length > 0) {
     return (
       <PressContainer>
-        {pressList.map(press => (
-          <PressItem key={press.id}>{press.company}</PressItem>
+        {pressList.map((press, index) => (
+          <PressItem onClick={() => { onChange(index) }} key={press.id}>{press.company}</PressItem>
         ))}
       </PressContainer>
     );
