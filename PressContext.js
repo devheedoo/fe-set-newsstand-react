@@ -1,19 +1,32 @@
-import React, { useReducer, createContext, useContext, useRef } from "react";
-
-const getData = () => {
-  let pressData = [];
-  fetch("../newsData.json")
-    .then(res => res.json())
-    .then(data => {
-      console.log(data);
-      pressData = data;
-    })
-    .catch(e => console.log(e));
-  return pressData;
-};
+import React, {
+  useState,
+  useEffect,
+  useReducer,
+  createContext,
+  useContext,
+  useRef
+} from "react";
 
 const pressReducer = (state, action) => {
   switch (action.type) {
+    case "LOADING":
+      return {
+        loading: true,
+        data: null,
+        error: null
+      };
+    case "SUCCESS":
+      return {
+        loading: false,
+        data: action.data,
+        error: null
+      };
+    case "ERROR":
+      return {
+        loading: false,
+        data: null,
+        error: action.error
+      };
     case "CHANGE":
       return state.filter(press => press.id === action.id);
     case "MOVE":
@@ -28,17 +41,43 @@ const PressDispatchContext = createContext();
 const PressNextIdContext = createContext();
 
 export const PressProvider = ({ children }) => {
-  const pressData = getData();
-  const [state, dispatch] = useReducer(pressReducer, pressData);
+  const [state, dispatch] = useReducer(pressReducer, {
+    loading: false,
+    data: null,
+    error: null
+  });
+
+  const fetchData = () => {
+    dispatch({ type: "LOADING" });
+    fetch("../newsData.json")
+      .then(res => res.json())
+      .then(res => {
+        dispatch({type: 'SUCCESS', data: res})
+      })
+      .catch(e => {
+        dispatch({type: 'ERROR', data: e})
+      })
+  };
+
+  useEffect(() => {
+    fetchData();
+  }, []);
+
   const nextId = useRef(1);
+  const { loading, data: pressData, error } = state;
+
+  if (loading) return <div>로딩중</div>
+  if (error) return <div> 에러 </div>
+  if (!pressData) return null;
+
   return (
-    <PressStateContext.Provider value={state}>
-      <PressDispatchContext.Provider value={dispatch}>
-        <PressNextIdContext.Provider value={nextId}>
-          {children}
-        </PressNextIdContext.Provider>
-      </PressDispatchContext.Provider>
-    </PressStateContext.Provider>
+      <PressStateContext.Provider value={state}>
+        <PressDispatchContext.Provider value={dispatch}>
+          <PressNextIdContext.Provider value={nextId}>
+            {children}
+          </PressNextIdContext.Provider>
+        </PressDispatchContext.Provider>
+      </PressStateContext.Provider>
   );
 };
 

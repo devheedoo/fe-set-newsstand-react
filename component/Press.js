@@ -1,5 +1,6 @@
-import React from 'react';
-import styled from 'styled-components'
+import React from "react";
+import styled from "styled-components";
+import { usePressState } from "../PressContext";
 
 const Press = () => {
   const PressContainer = styled.ul`
@@ -10,15 +11,25 @@ const Press = () => {
     flex-flow: column;
     justify-content: space-evenly;
     align-items: center;
+    overflow-y: scroll;
   `;
-  return (
-    <PressContainer>
-      <li>언론사</li>
-      <li>언론사</li>
-      <li>언론사</li>
-      <li>언론사</li>
-    </PressContainer>
-  );
+
+  const PressItem = styled.li`
+    margin-top: 4px;
+  `
+
+  const pressList = usePressState().data;
+
+  if (pressList.length > 0) {
+    return (
+      <PressContainer>
+        {pressList.map(press => (
+          <PressItem key={press.id}>{press.company}</PressItem>
+        ))}
+      </PressContainer>
+    );
+  }
+  return <div>로딩중...</div>
 };
 
 export default Press;
