@@ -9,7 +9,6 @@ const useFetch = (callback, url) => {
       const resp = await fetch(url);
       const data = await resp.json();
       callback(data);
-      console.log("data", data[0]);
       setFetching(false);
     } catch (err) {
       console.error("useFetch:", err);

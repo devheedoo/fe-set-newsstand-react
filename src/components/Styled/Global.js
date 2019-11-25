@@ -22,6 +22,4 @@ const GlobalStyle = createGlobalStyle`
   ${Colors};
 `;
 
-console.log(GlobalStyle);
-
 export default GlobalStyle;

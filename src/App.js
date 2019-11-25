@@ -16,12 +16,6 @@ function App() {
 
   const isLoading = useFetch(setNewsData, API_BASE);
 
-  useEffect(() => {}, [newsData]);
-
-  useEffect(() => {
-    console.warn("init");
-  }, [viewTypeInfo]);
-
   // @todo: radio 버튼을 사용하는 로직으로 변경
   const handleChangeViewType = e => {
     const changeType = viewTypeInfo.map(viewType => {
