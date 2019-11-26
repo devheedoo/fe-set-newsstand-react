@@ -33,38 +33,28 @@ const Details = styled.div`
   padding: 0 10px 10px;
 `;
 
-function ListView({ data }) {
-  const initialData = {
-    newslist: [],
-    thumbnews: {}
-  };
-  const [detailData, setDetailData] = useState(initialData);
+const createInitialData = data => {
+  return data.find(company => company.id == "025");
+};
 
-  const handleCompanyClick = id => {
+function ListView({ data, currentIndex, paginate }) {
+  const [detailData, setDetailData] = useState(createInitialData(data));
+  const [detailIdx, setDetailIdx] = useState(currentIndex);
+
+  const handleCompanyClick = ({ id, idx }) => {
     const newDetailData = data.find(company => company.id == id);
 
+    paginate(idx);
+    setDetailIdx(idx);
     setDetailData({
       newslist: newDetailData.newslist,
       thumbnews: newDetailData.thumbnews
     });
   };
 
-  useEffect(() => {}, []);
-
-  return (
-    <Section>
-      <ListViewNav>
-        <ul>
-          {data.map(item => (
-            <ListItem
-              key={item.id}
-              data={item}
-              handleCompanyClick={handleCompanyClick}
-            />
-          ))}
-        </ul>
-      </ListViewNav>
-      <ListViewContent>
+  const listViewDetail = data =>
+    detailData && (
+      <>
         <Thumb>
           <Image
             src={detailData.thumbnews.imageUrl}
@@ -75,7 +65,36 @@ function ListView({ data }) {
         <Details>
           <DetailList data={detailData} />
         </Details>
-      </ListViewContent>
+      </>
+    );
+
+  const isActive = index => detailIdx === index && true;
+
+  useEffect(() => {
+    const newDetailData = data[currentIndex];
+    setDetailIdx(currentIndex);
+    setDetailData({
+      newslist: newDetailData.newslist,
+      thumbnews: newDetailData.thumbnews
+    });
+  }, [currentIndex]);
+
+  return (
+    <Section>
+      <ListViewNav>
+        <ul>
+          {data.map((item, index) => (
+            <ListItem
+              key={item.id}
+              idx={index}
+              data={item}
+              isActive={isActive(index)}
+              handleCompanyClick={handleCompanyClick}
+            />
+          ))}
+        </ul>
+      </ListViewNav>
+      <ListViewContent>{listViewDetail(detailData)}</ListViewContent>
     </Section>
   );
 }

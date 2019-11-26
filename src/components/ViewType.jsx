@@ -9,13 +9,25 @@ const gridViewData = orgData => {
   };
 };
 
-const ViewType = ({ typeInfo, isLoading, newsData }) => {
+const ViewType = ({
+  typeInfo,
+  isLoading,
+  newsData,
+  currentIndex,
+  paginate
+}) => {
   const { type } = typeInfo.filter(viewType => viewType.isActive === true)[0];
 
   const views = type => {
     switch (type) {
       case "list":
-        return <ListView data={newsData} />;
+        return (
+          <ListView
+            data={newsData}
+            currentIndex={currentIndex}
+            paginate={paginate}
+          />
+        );
         break;
 
       case "grid":
@@ -24,7 +36,7 @@ const ViewType = ({ typeInfo, isLoading, newsData }) => {
         );
         break;
       default:
-        return <ListView data={newsData} />;
+        return <div>리스트 모양이 없네요!</div>;
         break;
     }
   };

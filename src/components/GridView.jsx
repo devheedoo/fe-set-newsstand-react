@@ -39,65 +39,35 @@ const PagerNext = styled(Pager)`
   right: 0;
 `;
 
-const getDataFrom = (data, per) => {
-  return data.filter((item, index) => index < per);
-};
+// const getDataFrom = (data, per) => {
+//   return data.filter((item, index) => index < per);
+// };
 
 function GridView({ data, gridViewData }) {
-  const initialData = getDataFrom(data, gridViewData.per);
-  const [list, setList] = useState(initialData);
-  const [pageIdx, setPageIdx] = useState(null);
+  const [pageIdx, setPageIdx] = useState(1);
+
+  const indexOfLast = pageIdx * gridViewData.per;
+  const indexOfFirst = indexOfLast - gridViewData.per;
+  const currentList = data.slice(indexOfFirst, indexOfLast);
 
   const handlePrevClick = e => {
     e.preventDefault();
     if (pageIdx <= 1) return false;
-    // console.warn("pageIdx:", pageIdx);
-    // console.warn("pageCount:", gridViewData.pageCount);
 
     setPageIdx(pageIdx - 1);
   };
 
   const handleNextClick = e => {
     e.preventDefault();
-    // console.warn("current", pageIdx);
     if (pageIdx >= gridViewData.pageCount) return false;
 
     setPageIdx(pageIdx + 1);
-    // console.warn("after pageIdx:", pageIdx);
   };
-
-  useEffect(() => {
-    // console.warn("first", list);
-    setPageIdx(1);
-  }, []);
-
-  useEffect(() => {
-    // console.log("useEffect", pageIdx);
-    // console.log("gridViewData.per * pageIdx", gridViewData.per * pageIdx);
-    // console.log(
-    //   "gridViewData.per * (pageIdx + 1)",
-    //   gridViewData.per * (pageIdx + 1)
-    // );
-
-    const result = data.filter((item, idx) => {
-      const size = pageIdx - 1;
-      if (
-        idx >= gridViewData.per * size &&
-        idx <= gridViewData.per * (size + 1)
-      )
-        return (
-          idx >= gridViewData.per * size && idx < gridViewData.per * (size + 1)
-        );
-    });
-    setList(result);
-  }, [pageIdx]);
 
   return (
     <Section>
-      <PagerPrev onClick={handlePrevClick}>이전목록</PagerPrev>
-      <PagerNext onClick={handleNextClick}>다음목록</PagerNext>
       <Grid>
-        {list.map((item, index) => {
+        {currentList.map((item, index) => {
           return (
             <GridItem key={item.id}>
               <img src={item.logoImgUrl} alt="" />
@@ -105,6 +75,8 @@ function GridView({ data, gridViewData }) {
           );
         })}
       </Grid>
+      <PagerPrev onClick={handlePrevClick}>이전목록</PagerPrev>
+      <PagerNext onClick={handleNextClick}>다음목록</PagerNext>
     </Section>
   );
 }

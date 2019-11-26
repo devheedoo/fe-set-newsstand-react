@@ -13,13 +13,14 @@ const Main = styled.main`
 function App() {
   const [viewTypeInfo, setViewTypeInfo] = useState(VIEW_TYPES);
   const [newsData, setNewsData] = useState([]);
+  const [currentIndex, setCurrentIndex] = useState(0);
 
   const isLoading = useFetch(setNewsData, API_BASE);
 
   // @todo: radio 버튼을 사용하는 로직으로 변경
-  const handleChangeViewType = e => {
+  const handleChangeViewType = ({ target }) => {
     const changeType = viewTypeInfo.map(viewType => {
-      viewType.type === e.target.dataset.type
+      viewType.type === target.dataset.type
         ? (viewType.isActive = true)
         : (viewType.isActive = false);
 
@@ -29,17 +30,28 @@ function App() {
     setViewTypeInfo(changeType);
   };
 
+  const lastOfIndex = newsData.length - 1;
+
+  const paginate = index => {
+    setCurrentIndex(index);
+  };
+
   return (
     <Main>
       <GlobalStyle />
       <Header
         viewTypeInfo={viewTypeInfo}
         handleChangeViewType={handleChangeViewType}
+        paginate={paginate}
+        lastOfIndex={lastOfIndex}
+        currentIndex={currentIndex}
       />
       <ViewType
         typeInfo={viewTypeInfo}
         isLoading={isLoading}
         newsData={newsData}
+        currentIndex={currentIndex}
+        paginate={paginate}
       />
     </Main>
   );
