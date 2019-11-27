@@ -5,7 +5,7 @@ const port = process.env.PORT || 4000;
 
 module.exports = {
   mode: "development",
-  devtool: "eval-source-ma",
+  devtool: "source-map",
   entry: ["./src/index.js"],
   output: {
     path: path.resolve(__dirname, "dist"),
@@ -32,6 +32,7 @@ module.exports = {
     contentBase: path.join(__dirname, "dist"),
     host: "localhost",
     port: port,
-    open: true
+    open: true,
+    historyApiFallback: true
   }
 };
