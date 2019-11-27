@@ -40,10 +40,6 @@ const PagerNext = styled(Pager)`
   right: 0;
 `;
 
-// const getDataFrom = (data, per) => {
-//   return data.filter((item, index) => index < per);
-// };
-
 function GridView({ data, gridViewData }) {
   const [pageIdx, setPageIdx] = useState(1);
 
@@ -70,8 +66,9 @@ function GridView({ data, gridViewData }) {
       <Grid>
         {currentList.map((item, index) => {
           return (
-            <GridItem key={item.id}>
-              <Press item={item} />
+            <GridItem key={item.id} isSubscribed={item.subscribed}>
+              {item.subscribed && <p>구독중</p>}
+              <Press pressData={item} />
             </GridItem>
           );
         })}

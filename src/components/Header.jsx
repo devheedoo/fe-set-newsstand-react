@@ -18,6 +18,12 @@ const Pager = styled(Button)`
   }
 `;
 
+const PressGroup = styled.div`
+  margin-right: auto;
+`;
+
+const PressLink = styled(Link)``;
+
 function Header({
   viewTypeInfo,
   handleChangeViewType,
@@ -26,11 +32,6 @@ function Header({
   lastOfIndex
 }) {
   let isMatch = useRouteMatch("/subscribe");
-
-  const handleChange = ({ target }) => {
-    console.log(target.value);
-    handleChangeViewType(target.value);
-  };
 
   const viewTypeButton = viewTypes =>
     viewTypes.map((viewType, index) => (
@@ -60,14 +61,10 @@ function Header({
   return (
     <NewsStandHeader>
       <h1>Title</h1>
-      <div
-        style={{
-          marginRight: "auto"
-        }}
-      >
-        <Link to="/all">전체 언론사</Link> |
-        <Link to="/subscribe">구독한 언론사</Link>
-      </div>
+      <PressGroup>
+        <PressLink to="/all">전체 언론사</PressLink> |
+        <PressLink to="/subscribe">구독한 언론사</PressLink>
+      </PressGroup>
       {isMatch && viewTypeButton(viewTypeInfo)}
       <div>
         {activeViewType.type === "list" && (

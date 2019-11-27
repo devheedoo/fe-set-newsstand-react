@@ -1,9 +1,11 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, createContext } from "react";
 import styled from "styled-components";
 import useFetch from "./hooks/useFetch";
 import { Header, ViewType, GridView } from "./components";
 import { GRID_VIEW_COUNT, API_BASE, VIEW_TYPES } from "./const";
 import { BrowserRouter, Switch, Route } from "react-router-dom";
+
+export const NewsStore = createContext();
 
 const Main = styled.main`
   margin: 0 auto;
@@ -19,6 +21,7 @@ function App() {
   const [viewTypeInfo, setViewTypeInfo] = useState(VIEW_TYPES);
   const [newsData, setNewsData] = useState([]);
   const [currentIndex, setCurrentIndex] = useState(0);
+  const [subscribed, setSubscribed] = useState(null);
 
   const isLoading = useFetch(setNewsData, API_BASE);
 
@@ -34,44 +37,61 @@ function App() {
     setViewTypeInfo(changeType);
   };
 
-  const lastOfIndex = newsData.length - 1;
+  const lastOfIndex = newsData.filter(press => press.subscribed).length - 1;
 
   const paginate = index => {
     setCurrentIndex(index);
   };
 
+  const updateNewsData = nextData => {
+    const updateIndex = newsData.findIndex(press => press.id === nextData.id);
+    const result = Object.assign([...newsData], {
+      [updateIndex]: nextData
+    });
+    return result;
+  };
+
+  useEffect(() => {
+    // 데이터 교체 후 refresh
+    if (subscribed) {
+      setNewsData(updateNewsData(subscribed));
+    }
+  }, [subscribed]);
+
   return (
-    <BrowserRouter>
-      <Main>
-        <Header
-          viewTypeInfo={viewTypeInfo}
-          handleChangeViewType={handleChangeViewType}
-          paginate={paginate}
-          lastOfIndex={lastOfIndex}
-          currentIndex={currentIndex}
-        />
-        <Switch>
-          <Route exact path="/">
-            <GridView data={newsData} gridViewData={gridViewData(newsData)} />
-          </Route>
-          <Route path="/all">
-            <GridView data={newsData} gridViewData={gridViewData(newsData)} />
-          </Route>
-          <Route path="/subscribe">
-            <ViewType
-              viewTypeInfo={viewTypeInfo}
-              isLoading={isLoading}
-              newsData={newsData}
-              currentIndex={currentIndex}
-              paginate={paginate}
-            />
-          </Route>
-          <Route path="*">
-            <div>페이지를 찾을 수 없습니다.</div>
-          </Route>
-        </Switch>
-      </Main>
-    </BrowserRouter>
+    <NewsStore.Provider value={setSubscribed}>
+      <BrowserRouter>
+        <Main>
+          <Header
+            viewTypeInfo={viewTypeInfo}
+            handleChangeViewType={handleChangeViewType}
+            paginate={paginate}
+            lastOfIndex={lastOfIndex}
+            currentIndex={currentIndex}
+          />
+          <Switch>
+            <Route exact path="/">
+              <GridView data={newsData} gridViewData={gridViewData(newsData)} />
+            </Route>
+            <Route path="/all">
+              <GridView data={newsData} gridViewData={gridViewData(newsData)} />
+            </Route>
+            <Route path="/subscribe">
+              <ViewType
+                viewTypeInfo={viewTypeInfo}
+                isLoading={isLoading}
+                newsData={newsData}
+                currentIndex={currentIndex}
+                paginate={paginate}
+              />
+            </Route>
+            <Route path="*">
+              <div>페이지를 찾을 수 없습니다.</div>
+            </Route>
+          </Switch>
+        </Main>
+      </BrowserRouter>
+    </NewsStore.Provider>
   );
 }
 

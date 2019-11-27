@@ -18,12 +18,16 @@ const ViewType = ({
     viewType => viewType.isActive === true
   )[0];
 
+  const myNewsData = newsData.filter(press => press.subscribed);
+
   const views = type => {
+    if (!myNewsData.length) return <div>구독중인 언론사가 없습니다.</div>;
+
     switch (type) {
       case "list":
         return (
           <ListView
-            data={newsData}
+            data={myNewsData}
             currentIndex={currentIndex}
             paginate={paginate}
           />
@@ -31,7 +35,7 @@ const ViewType = ({
 
       case "grid":
         return (
-          <GridView data={newsData} gridViewData={gridViewData(newsData)} />
+          <GridView data={myNewsData} gridViewData={gridViewData(newsData)} />
         );
 
       default:

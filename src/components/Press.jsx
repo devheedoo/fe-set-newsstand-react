@@ -1,57 +1,37 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import styled from "styled-components";
+import Subscribe from "./Subscribe";
 
 const PressWrapper = styled.div`
   position: relative;
   display: flex;
   flex: 1;
   height: 100%;
-
   cursor: pointer;
-`;
-
-const Subscribe = styled.div`
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  display: flex;
-  flex-direction: column;
-  background-color: #fff;
-`;
-
-const SubscribeButton = styled.button`
-  margin: auto;
 `;
 
 const Image = styled.img`
   margin: auto;
 `;
 
-function Press({ item }) {
+function Press({ pressData }) {
   const [isOver, setIsOver] = useState(false);
-  const handleMouseEnter = () => setIsOver(true);
-  const handleMouseLeave = () => setIsOver(false);
-
-  const handleSubscribe = () => {};
-
-  const handleViewArticle = () => {};
+  const handleMouseEnter = e => {
+    e.stopPropagation();
+    setIsOver(true);
+  };
+  const handleMouseLeave = e => {
+    e.stopPropagation();
+    setIsOver(false);
+  };
 
   return (
     <PressWrapper
       onMouseEnter={handleMouseEnter}
       onMouseLeave={handleMouseLeave}
     >
-      <Image src={item.logoImgUrl} alt="" />
-      {isOver && (
-        <Subscribe>
-          <SubscribeButton onClick={handleSubscribe}>구독하기</SubscribeButton>
-          <SubscribeButton onClick={handleViewArticle}>
-            기사보기
-          </SubscribeButton>
-        </Subscribe>
-      )}
+      <Image src={pressData.logoImgUrl} alt="" />
+      {isOver && <Subscribe pressData={pressData} />}
     </PressWrapper>
   );
 }
