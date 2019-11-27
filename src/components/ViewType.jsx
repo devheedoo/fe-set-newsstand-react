@@ -35,7 +35,7 @@ const ViewType = ({
 
       case "grid":
         return (
-          <GridView data={myNewsData} gridViewData={gridViewData(newsData)} />
+          <GridView data={myNewsData} gridViewData={gridViewData(myNewsData)} />
         );
 
       default:

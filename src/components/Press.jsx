@@ -17,11 +17,9 @@ const Image = styled.img`
 function Press({ pressData }) {
   const [isOver, setIsOver] = useState(false);
   const handleMouseEnter = e => {
-    e.stopPropagation();
     setIsOver(true);
   };
   const handleMouseLeave = e => {
-    e.stopPropagation();
     setIsOver(false);
   };
 
