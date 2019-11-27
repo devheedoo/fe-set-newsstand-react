@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import styled from "styled-components";
+import { Press } from "./";
 
 const Section = styled.section`
   position: relative;
@@ -70,7 +71,7 @@ function GridView({ data, gridViewData }) {
         {currentList.map((item, index) => {
           return (
             <GridItem key={item.id}>
-              <img src={item.logoImgUrl} alt="" />
+              <Press item={item} />
             </GridItem>
           );
         })}

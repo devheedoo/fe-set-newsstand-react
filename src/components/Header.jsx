@@ -1,6 +1,8 @@
 import React, { useState } from "react";
 import styled from "styled-components";
 import { Button } from "./Styled";
+import RadioButton from "./RadioButton";
+import { Switch, Route, Link, useRouteMatch } from "react-router-dom";
 
 const NewsStandHeader = styled.header`
   display: flex;
@@ -23,17 +25,22 @@ function Header({
   paginate,
   lastOfIndex
 }) {
-  // 의미상 Radio 버튼을 사용하는것이 맞음. @todo: Radio 버튼 변경
+  let isMatch = useRouteMatch("/subscribe");
+
+  const handleChange = ({ target }) => {
+    console.log(target.value);
+    handleChangeViewType(target.value);
+  };
+
   const viewTypeButton = viewTypes =>
-    viewTypes.map(viewType => (
-      <Button
-        key={viewType.type}
-        active={viewType.isActive}
-        onClick={handleChangeViewType}
-        data-type={viewType.type}
-      >
-        {viewType.type}
-      </Button>
+    viewTypes.map((viewType, index) => (
+      <RadioButton
+        value={viewType.type}
+        isActive={viewType.isActive}
+        handleChange={handleChangeViewType}
+        name="list-types"
+        key={index}
+      />
     ));
 
   const activeViewType = viewTypeInfo.find(
@@ -50,8 +57,6 @@ function Header({
     paginate(currentIndex + 1);
   };
 
-  const isActive = index => detailIdx === index && true;
-
   return (
     <NewsStandHeader>
       <h1>Title</h1>
@@ -60,9 +65,10 @@ function Header({
           marginRight: "auto"
         }}
       >
-        구독한 언론사 | 전체 언론사
+        <Link to="/all">전체 언론사</Link> |
+        <Link to="/subscribe">구독한 언론사</Link>
       </div>
-      {viewTypeButton(viewTypeInfo)}
+      {isMatch && viewTypeButton(viewTypeInfo)}
       <div>
         {activeViewType.type === "list" && (
           <>
