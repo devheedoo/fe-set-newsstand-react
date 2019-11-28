@@ -18,16 +18,23 @@ const SubscribeButton = styled.button`
 `;
 
 const Subscribe = ({ pressData }) => {
-  const setSubscribed = useContext(NewsStore);
+  const dispatch = useContext(NewsStore);
+  const subscribed = !pressData.subscribed;
+  const subscribeText = subscribed ? "구독하기" : "해지하기";
+  const subscribeActionType = subscribed ? "SUBSCRIBE" : "UNSUBSCRIBE";
 
   const handleSubscribe = () => {
-    setSubscribed({ ...pressData, subscribed: true });
+    dispatch({
+      type: subscribeActionType,
+      payload: { ...pressData, subscribed }
+    });
   };
 
   return (
     <SubscribeGroup>
-      <SubscribeButton onClick={handleSubscribe}>구독하기</SubscribeButton>
-      <SubscribeButton>기사보기</SubscribeButton>
+      <SubscribeButton onClick={handleSubscribe}>
+        {subscribeText}
+      </SubscribeButton>
     </SubscribeGroup>
   );
 };

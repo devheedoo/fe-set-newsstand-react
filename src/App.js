@@ -1,4 +1,4 @@
-import React, { useState, useEffect, createContext } from "react";
+import React, { useState, useEffect, useReducer, createContext } from "react";
 import styled from "styled-components";
 import useFetch from "./hooks/useFetch";
 import { Header, ViewType, GridView } from "./components";
@@ -17,13 +17,32 @@ const gridViewData = orgData => ({
   pageCount: Math.round(orgData.length / GRID_VIEW_COUNT)
 });
 
+const updateData = (prevState, payload) => {
+  return prevState.map(state => {
+    if (state.id !== payload.id) return state;
+    return { ...state, ...payload };
+  });
+};
+
+const reducer = (newsData, { type, payload }) => {
+  switch (type) {
+    case "FETCH_DATA":
+      return [...payload];
+    case "SUBSCRIBE":
+      return updateData(newsData, payload);
+    case "UNSUBSCRIBE":
+      return updateData(newsData, payload);
+    default:
+      throw new Error();
+  }
+};
+
 function App() {
   const [viewTypeInfo, setViewTypeInfo] = useState(VIEW_TYPES);
-  const [newsData, setNewsData] = useState([]);
   const [currentIndex, setCurrentIndex] = useState(0);
-  const [subscribed, setSubscribed] = useState(null);
+  const [newsData, dispatch] = useReducer(reducer, []);
 
-  const isLoading = useFetch(setNewsData, API_BASE);
+  const isLoading = useFetch(dispatch, API_BASE);
 
   const handleChangeViewType = ({ target }) => {
     const changeType = viewTypeInfo.map(viewType => {
@@ -43,23 +62,8 @@ function App() {
     setCurrentIndex(index);
   };
 
-  const updateNewsData = nextData => {
-    const updateIndex = newsData.findIndex(press => press.id === nextData.id);
-    const result = Object.assign([...newsData], {
-      [updateIndex]: nextData
-    });
-    return result;
-  };
-
-  useEffect(() => {
-    // 데이터 교체 후 refresh
-    if (subscribed) {
-      setNewsData(updateNewsData(subscribed));
-    }
-  }, [subscribed]);
-
   return (
-    <NewsStore.Provider value={setSubscribed}>
+    <NewsStore.Provider value={dispatch}>
       <BrowserRouter>
         <Main>
           <Header
