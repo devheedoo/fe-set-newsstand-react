@@ -1,31 +1,45 @@
-import React, { useState, useEffect } from "react";
-import { ListView, GridView } from "./";
+import React from "react";
+import { ListView, GridView } from ".";
 import { GRID_VIEW_COUNT } from "../const";
 
-const gridViewData = orgData => {
-  return {
-    per: GRID_VIEW_COUNT,
-    pageCount: Math.round(orgData.length / GRID_VIEW_COUNT)
-  };
-};
+const gridViewData = orgData => ({
+  per: GRID_VIEW_COUNT,
+  pageCount: Math.round(orgData.length / GRID_VIEW_COUNT)
+});
 
-const ViewType = ({ typeInfo, isLoading, newsData }) => {
-  const { type } = typeInfo.filter(viewType => viewType.isActive === true)[0];
+const ViewType = ({
+  viewTypeInfo,
+  isLoading,
+  newsData,
+  currentIndex,
+  paginate
+}) => {
+  const { type } = viewTypeInfo.filter(
+    viewType => viewType.isActive === true
+  )[0];
+
+  const myNewsData = newsData.filter(press => press.subscribed);
 
   const views = type => {
+    if (!myNewsData.length) return <div>구독중인 언론사가 없습니다.</div>;
+
     switch (type) {
       case "list":
-        return <ListView data={newsData} />;
-        break;
+        return (
+          <ListView
+            data={myNewsData}
+            currentIndex={currentIndex}
+            paginate={paginate}
+          />
+        );
 
       case "grid":
         return (
-          <GridView data={newsData} gridViewData={gridViewData(newsData)} />
+          <GridView data={myNewsData} gridViewData={gridViewData(myNewsData)} />
         );
-        break;
+
       default:
-        return <ListView data={newsData} />;
-        break;
+        return <div>리스트 모양이 없네요!</div>;
     }
   };
 

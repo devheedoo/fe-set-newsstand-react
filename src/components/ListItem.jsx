@@ -6,12 +6,20 @@ const Item = styled.li`
   line-height: 1.5;
 `;
 
-function ListItem({ data, handleCompanyClick }) {
+const ItemLink = styled.a`
+  color: ${props => (props.isActive ? "red" : "blue")};
+`;
+
+function ListItem({ data, idx, isActive, handleCompanyClick }) {
   return (
-    <Item id={data.id}>
-      <a href="#" onClick={() => handleCompanyClick(data.id)}>
+    <Item id={data.id} data-idx={idx}>
+      <ItemLink
+        href="#"
+        isActive={isActive}
+        onClick={() => handleCompanyClick({ id: data.id, idx: idx })}
+      >
         {data.company}
-      </a>
+      </ItemLink>
     </Item>
   );
 }
