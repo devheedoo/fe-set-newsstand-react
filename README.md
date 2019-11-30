@@ -4,9 +4,11 @@
 
 > without CRA
 
-- yarn
-- babel
-- webpack
+- Yarn
+- Babel
+- Webpack
+- React
+- Styled Component
 
 ## Build
 
