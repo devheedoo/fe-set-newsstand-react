@@ -2,13 +2,20 @@
 
 ## Config
 
+> without CRA
+
 - yarn
 - babel
 - webpack
-- scss
 
 ## Build
 
 ```bash
 $ yarn build
+```
+
+## Start
+
+```bash
+$ yarn start
 ```
