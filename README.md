@@ -21,3 +21,11 @@ $ yarn build
 ```bash
 $ yarn start
 ```
+
+## History
+
+1. Set Babel, Webpack, React
+
+2. Set Styled Components
+
+![make-styled-components](./history/make-styled-components.png)
