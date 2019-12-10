@@ -1,6 +1,6 @@
-import React from 'react';
+import React, { useState } from 'react';
 import styled, { css } from 'styled-components';
-
+import pressListData from '../api/pressListData';
 import ListView from './Contents/ListView';
 import CardView from './Contents/CardView';
 
@@ -66,13 +66,25 @@ const Contents = styled.div`
   align-items: center;
 `;
 
-const Title = styled.h1`
-  font-size: 1.5em;
-  text-align: center;
-  color: ${props => props.color ? props.color : "black"};
-`;
-
 const App = props => {
+  const [pressIndex, setPressIndex] = useState(0);
+  const pressIds = pressListData.map(press => press.id);
+
+  const goToPrevPress = () => {
+    if (pressIndex > 0) {
+      setPressIndex(pressIndex - 1);
+    } else {
+      setPressIndex(pressIndex - 1 + pressIds.length);
+    }
+  }
+  const goToNextPress = () => {
+    if (pressIndex < pressIds.length) {
+      setPressIndex(pressIndex + 1);
+    } else {
+      setPressIndex(pressIndex + 1 - pressIds.length);
+    }
+  }
+
   return (
     <Container>
       <Menubar>
@@ -84,13 +96,16 @@ const App = props => {
             ViewType
           </ViewType>
           <PrevNext>
-            <Prev>Prev</Prev>
-            <Next>Next</Next>
+            <Prev><button onClick={goToPrevPress}>Prev</button></Prev>
+            <Next><button onClick={goToNextPress}>Next</button></Next>
           </PrevNext>
         </ViewControl>
       </Menubar>
       <Contents>
-        <ListView />
+        <ListView
+          pressListData={pressListData}
+          pressId={pressIds[pressIndex]}
+        />
         <CardView />
       </Contents>
     </Container>
