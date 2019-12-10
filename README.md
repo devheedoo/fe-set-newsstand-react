@@ -10,6 +10,12 @@
 - React
 - Styled Component
 
+## Install
+
+```bash
+$ yarn install
+```
+
 ## Build
 
 ```bash
