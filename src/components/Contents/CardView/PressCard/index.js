@@ -11,8 +11,8 @@ const PressOptionBox = styled.div`
 `;
 
 const PressCardBox = styled.div`
-  height: 100px;
-  flex: 0 0 150px;
+  height: 66px;
+  flex: 0 0 115px;
   display: flex;
   justify-content: center;
   align-items: center;

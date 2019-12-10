@@ -4,7 +4,7 @@ import pressListData from '../../../api/pressListData';
 import PressCard from './PressCard';
 
 const CardViewBox = styled.div`
-  height: 300px;
+  height: 200px;
   width: 700px;
   background-color: cyan;
   display: flex;

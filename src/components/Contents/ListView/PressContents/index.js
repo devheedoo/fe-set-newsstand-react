@@ -8,6 +8,7 @@ const PressContentsBox = styled.div`
   background-color: lightgreen;
   display: flex;
   flex-direction: column;
+  box-sizing: border-box;
 `;
 
 const PressNewsBox = styled.div`
