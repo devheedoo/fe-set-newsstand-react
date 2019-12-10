@@ -1,7 +1,7 @@
 import React from 'react';
 import styled, { css } from 'styled-components';
-import pressListData from '../../../api/pressListData';
 import PressCard from './PressCard';
+import * as constants from '../../constants';
 
 const CardViewBox = styled.div`
   height: 200px;
@@ -13,15 +13,21 @@ const CardViewBox = styled.div`
   position: relative;
 `;
 
-const CardView = () => {
+const CardView = (props) => {
+  const {pressListData, page} = props;
   const pressCardList = [];
   pressListData.map((press, index) => {
-    pressCardList.push(
-      <PressCard
-        key={"press_card_" + (index + 1)}
-        press={press}
-      />
-    )
+    if (
+      index >= page * constants.PRESS_COUNT_PER_PAGE &&
+      index < (page + 1) * constants.PRESS_COUNT_PER_PAGE
+    ) {
+      pressCardList.push(
+        <PressCard
+          key={"press_card_" + (index + 1)}
+          press={press}
+        />
+      )
+    }
   });
   return (
     <CardViewBox>{pressCardList}</CardViewBox>

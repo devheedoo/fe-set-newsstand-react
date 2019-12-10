@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
 import styled, { css } from 'styled-components';
 import pressListData from '../api/pressListData';
-import ListView from './Contents/ListView';
-import CardView from './Contents/CardView';
+import Contents from './Contents';
+import * as constants from './constants';
 
 // Container
 const Container = styled.div`
@@ -56,15 +56,13 @@ const Next = styled.div`
   flex: 0 0 45px;
 `;
 
-
-const LIST = 'LIST';
-const CARD = 'CARD';
-
 const App = props => {
   const [pressIndex, setPressIndex] = useState(0);
-  const [viewType, setViewType] = useState(LIST);
+  const [page, setPage] = useState(0);
+  const [viewType, setViewType] = useState(constants.VIEW_TYPE_LIST);
 
   const pressIds = pressListData.map(press => press.id);
+  const maxPage = Math.ceil(pressListData.length / 18)
 
   const goToPrevPress = () => {
     if (pressIndex > 0) {
@@ -81,12 +79,52 @@ const App = props => {
     }
   }
 
+  const goToPrevPage = () => {
+    if (page > 0) {
+      setPage(page - 1);
+    } else {
+      setPage(page - 1 + maxPage);
+    }
+  }
+  const goToNextPage = () => {
+    if (page < maxPage - 1) {
+      setPage(page + 1);
+    } else {
+      setPage(page + 1 - maxPage);
+    }
+  }
+
+  const handlePrevButton = () => {
+    switch (viewType) {
+      case constants.VIEW_TYPE_LIST:
+        goToPrevPress();
+        break;
+      case constants.VIEW_TYPE_CARD:
+        goToPrevPage();
+        break;
+      default:
+        break;
+    }
+  }
+  const handleNextButton = () => {
+    switch (viewType) {
+      case constants.VIEW_TYPE_LIST:
+        goToNextPress();
+        break;
+      case constants.VIEW_TYPE_CARD:
+        goToNextPage();
+        break;
+      default:
+        break;
+    }
+  }
+
   const changeToCardView = () => {
-    setViewType(CARD);
+    setViewType(constants.VIEW_TYPE_CARD);
   };
 
   const changeToListView = () => {
-    setViewType(LIST);
+    setViewType(constants.VIEW_TYPE_LIST);
   };
 
   return (
@@ -101,8 +139,8 @@ const App = props => {
             <button onClick={changeToListView}>LIST</button>
           </ViewType>
           <PrevNext>
-            <Prev><button onClick={goToPrevPress}>Prev</button></Prev>
-            <Next><button onClick={goToNextPress}>Next</button></Next>
+            <Prev><button onClick={handlePrevButton}>Prev</button></Prev>
+            <Next><button onClick={handleNextButton}>Next</button></Next>
           </PrevNext>
         </ViewControl>
       </Menubar>
@@ -110,36 +148,10 @@ const App = props => {
         viewType={viewType}
         pressListData={pressListData}
         pressId={pressIds[pressIndex]}
+        page={page}
       />
     </Container>
   );
 };
-
-// ContentsBox (하단)
-const ContentsBox = styled.div`
-  display: flex;
-  width: 780px;
-  height: 700px;
-  background-color: orange;
-  flex-direction: column;
-  align-items: center;
-`;
-
-const Contents = (props) => {
-  const {viewType, pressListData, pressId} = props;
-  return (
-    <ContentsBox>
-      {viewType === LIST ? (
-        <ListView
-          pressListData={pressListData}
-          pressId={pressId}
-        />
-      ) : null}
-      {viewType === CARD ? (
-        <CardView />
-      ) : null}
-    </ContentsBox>
-  );
-}
 
 export default App;
