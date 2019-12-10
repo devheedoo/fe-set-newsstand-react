@@ -110,7 +110,20 @@ const NewsList = (props) => {
 const News = (props) => {
   const {news} = props;
   return (
-    <li><a href="#" title={news}>{news}</a></li>
+    <li>
+      <a
+        href="#"
+        style={{
+          display: 'block',
+          textOverflow: 'ellipsis',
+          whiteSpace: 'nowrap',
+          overflow: 'hidden',
+          textDecoration: 'none',
+        }}
+        title={news}>
+        {news}
+      </a>
+    </li>
   );
 }
 
