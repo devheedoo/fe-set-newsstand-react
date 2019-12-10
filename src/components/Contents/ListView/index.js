@@ -11,15 +11,18 @@ const ListViewBox = styled.div`
 `;
 
 const ListView = (props) => {
-  const {pressListData} = props;
+  const {pressListData, pressId} = props;
   const getPressContentsById = (pressListData, id) => {
     return pressListData.filter(press => press.id === id);
   }
-  const pressContentsArray = getPressContentsById(pressListData, props.pressId);
+  const pressContentsArray = getPressContentsById(pressListData, pressId);
   const pressContents = pressContentsArray && pressContentsArray[0];
   return (
     <ListViewBox>
-      <PressList pressListData={pressListData} />
+      <PressList
+        pressId={pressId}
+        pressListData={pressListData}
+      />
       <PressContents contents={pressContents} />
     </ListViewBox>
   );

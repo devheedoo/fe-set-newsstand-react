@@ -14,13 +14,15 @@ const PressListBox = styled.div`
 `;
 
 const PressList = (props) => {
-  const {pressListData} = props;
+  const {pressListData, pressId} = props;
   const pressList = [];
   pressListData.map((press) => {
+    const isHighlighting = press.id === pressId;
     pressList.push(
       <Press
         key={press.id}
         press={press}
+        isHighlighting={isHighlighting}
       />
     )
   });
@@ -38,9 +40,12 @@ const PressList = (props) => {
 };
 
 const Press = (props) => {
-  const {press} = props;
+  const {press, isHighlighting} = props;
+  const fontColor = isHighlighting ? 'blue' : 'black';
   return (
-    <li class="press">{press.company}</li>
+    <li style={{ color: fontColor }}>
+      {press.company}
+    </li>
   );
 }
 
