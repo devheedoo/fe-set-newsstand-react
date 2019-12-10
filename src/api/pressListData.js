@@ -1,4 +1,4 @@
-const pressList = [{
+const pressListData = [{
   "company": "SBS",
   "id": "055",
   "categoryId": 0,
@@ -510,4 +510,4 @@ const pressList = [{
   }
 }];
 
-export default pressList;
+export default pressListData;

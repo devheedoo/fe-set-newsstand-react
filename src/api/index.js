@@ -1,15 +1,15 @@
 import categoryList from './categoryListData';
-import pressList from './pressListData';
+import pressListData from './pressListData';
 
 export const loadCategoryList() {
   return categoryList;
 }
 export const loadPressList() {
-  return pressList;
+  return pressListData;
 }
 export const loadMyPressList() {}
 export const loadNewsList(pressId) {
-  return pressList.filter(press => press.id === pressId);
+  return pressListData.filter(press => press.id === pressId);
 }
 // export const loadNewsDetail(newsId) {}
 export const subscribe(pressId) {
