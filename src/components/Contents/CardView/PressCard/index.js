@@ -1,6 +1,5 @@
 import React from 'react';
 import styled, { css } from 'styled-components';
-import PressOption from './PressOption';
 
 const PressOptionBox = styled.div`
   position: absolute;
@@ -34,7 +33,8 @@ const PressCard = (props) => {
         <img src={props.press.logoImgUrl} alt={props.press.company} />
       </PressLogoBox>
       <PressOptionBox>
-        <PressOption />
+        <button>구독</button>
+        <button>기사보기</button>
       </PressOptionBox>
     </PressCardBox>
   )

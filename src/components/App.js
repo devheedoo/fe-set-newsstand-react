@@ -4,6 +4,8 @@ import pressListData from '../api/pressListData';
 import Contents from './Contents';
 import * as constants from './constants';
 
+import SubscriptionContext from './SubscriptionContext';
+
 // Container
 const Container = styled.div`
   display: flex;
@@ -60,6 +62,16 @@ const App = props => {
   const [pressIndex, setPressIndex] = useState(0);
   const [page, setPage] = useState(0);
   const [viewType, setViewType] = useState(constants.VIEW_TYPE_LIST);
+  const [subscription, setSubscription] = useState([
+    { id: '055' },
+    { id: '057' },
+    { id: '073' },
+  ]);
+
+  const dispatch = {
+    type: 'subscribe',
+    payload: '904',
+  }
 
   const pressIds = pressListData.map(press => press.id);
   const maxPage = Math.ceil(pressListData.length / 18)
@@ -130,29 +142,31 @@ const App = props => {
   };
 
   return (
-    <Container>
-      <Menubar>
-        <PressFilter>
-          PressFilter
-        </PressFilter>
-        <ViewControl>
-          <ViewType>
-            <button onClick={changeToCardView}>CARD</button>
-            <button onClick={changeToListView}>LIST</button>
-          </ViewType>
-          <PrevNext>
-            <Prev><button onClick={handlePrevButton}>Prev</button></Prev>
-            <Next><button onClick={handleNextButton}>Next</button></Next>
-          </PrevNext>
-        </ViewControl>
-      </Menubar>
-      <Contents
-        viewType={viewType}
-        pressListData={pressListData}
-        pressId={pressIds[pressIndex]}
-        page={page}
-      />
-    </Container>
+    <SubscriptionContext.Provider value={{subscription, dispatch}}>
+      <Container>
+        <Menubar>
+          <PressFilter>
+            PressFilter
+          </PressFilter>
+          <ViewControl>
+            <ViewType>
+              <button onClick={changeToCardView}>CARD</button>
+              <button onClick={changeToListView}>LIST</button>
+            </ViewType>
+            <PrevNext>
+              <Prev><button onClick={handlePrevButton}>Prev</button></Prev>
+              <Next><button onClick={handleNextButton}>Next</button></Next>
+            </PrevNext>
+          </ViewControl>
+        </Menubar>
+        <Contents
+          viewType={viewType}
+          pressListData={pressListData}
+          pressId={pressIds[pressIndex]}
+          page={page}
+        />
+      </Container>
+    </SubscriptionContext.Provider>
   );
 };
 
