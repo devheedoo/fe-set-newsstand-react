@@ -3,10 +3,14 @@ import styled, { css } from 'styled-components';
 
 const PressListBox = styled.div`
   flex: 0 0 150px;
+  height: 200px;
+  overflow: scroll;
   background-color: lightblue;
   display: flex;
   flex-direction: column;
   align-items: center;
+  box-sizing: border-box;
+  padding: 12px;
 `;
 
 const PressList = (props) => {
@@ -21,14 +25,22 @@ const PressList = (props) => {
     )
   });
   return (
-    <PressListBox>{pressList}</PressListBox>
+    <PressListBox>
+      <ul style={{
+        padding: 0,
+        margin: 0,
+        listStyle: 'none',
+        lineHeight: '15px',
+        fontSize: '12px',
+      }}>{pressList}</ul>
+    </PressListBox>
   );
 };
 
 const Press = (props) => {
   const {press} = props;
   return (
-    <a class="press">{press.company}</a>
+    <li class="press">{press.company}</li>
   );
 }
 

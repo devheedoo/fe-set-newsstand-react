@@ -6,7 +6,7 @@ import PressContents from './PressContents';
 
 const ListViewBox = styled.div`
   width: 700px;
-  height: 300px;
+  height: 200px;
   background-color: yellow;
   display: flex;
 `;
