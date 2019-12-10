@@ -78,7 +78,7 @@ const App = props => {
     }
   }
   const goToNextPress = () => {
-    if (pressIndex < pressIds.length) {
+    if (pressIndex < pressIds.length - 1) {
       setPressIndex(pressIndex + 1);
     } else {
       setPressIndex(pressIndex + 1 - pressIds.length);
