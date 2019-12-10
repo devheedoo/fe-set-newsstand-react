@@ -80,6 +80,7 @@ const App = props => {
   }
 
   const goToPrevPage = () => {
+    if (maxPage <= 1) return;
     if (page > 0) {
       setPage(page - 1);
     } else {
@@ -87,6 +88,7 @@ const App = props => {
     }
   }
   const goToNextPage = () => {
+    if (maxPage <= 1) return;
     if (page < maxPage - 1) {
       setPage(page + 1);
     } else {
