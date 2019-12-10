@@ -1,6 +1,7 @@
 import React from 'react';
 import styled, { css } from 'styled-components';
 
+import ListView from './Contents/ListView';
 import CardView from './Contents/CardView';
 
 // Container
@@ -65,47 +66,6 @@ const Contents = styled.div`
   align-items: center;
 `;
 
-const ListView = styled.div`
-  width: 700px;
-  height: 300px;
-  background-color: yellow;
-  display: flex;
-`;
-
-const PressList = styled.div`
-  flex: 0 0 150px;
-  background-color: lightblue;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-`;
-
-const Press = styled.div``;
-
-const PressContents = styled.div`
-  flex: 0 0 550px;
-  background-color: lightgreen;
-  display: flex;
-  flex-direction: column;
-`;
-
-const PressInfo = styled.div`
-  background-color: skyblue;
-`;
-
-const PressNews = styled.div`
-  display: flex;
-`;
-
-const PressBigNews = styled.div`
-  flex: 0 0 150px;
-  background-color: cyan;
-`;
-
-const NewsList = styled.div``;
-
-const News = styled.div``;
-
 const Title = styled.h1`
   font-size: 1.5em;
   text-align: center;
@@ -130,32 +90,7 @@ const App = props => {
         </ViewControl>
       </Menubar>
       <Contents>
-        <ListView>
-          <PressList>
-            <Press>Press1</Press>
-            <Press>Press2</Press>
-            <Press>Press3</Press>
-            <Press>Press4</Press>
-            <Press>Press5</Press>
-          </PressList>
-          <PressContents>
-            <PressInfo>
-              PressInfo
-            </PressInfo>
-            <PressNews>
-              <PressBigNews>
-                PressBigNews
-              </PressBigNews>
-              <NewsList>
-                <News>News1</News>
-                <News>News2</News>
-                <News>News3</News>
-                <News>News4</News>
-                <News>News5</News>
-              </NewsList>
-            </PressNews>
-          </PressContents>
-        </ListView>
+        <ListView />
         <CardView />
       </Contents>
     </Container>

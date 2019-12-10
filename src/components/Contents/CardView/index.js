@@ -1,6 +1,6 @@
 import React from 'react';
 import styled, { css } from 'styled-components';
-import pressList from '../../../api/pressListData';
+import pressListData from '../../../api/pressListData';
 import PressCard from './PressCard';
 
 const CardViewBox = styled.div`
@@ -15,7 +15,7 @@ const CardViewBox = styled.div`
 
 const CardView = () => {
   const pressCardList = [];
-  pressList.map((press, index) => {
+  pressListData.map((press, index) => {
     pressCardList.push(
       <PressCard
         key={"press_card_" + (index + 1)}
