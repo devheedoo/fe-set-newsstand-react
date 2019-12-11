@@ -71,18 +71,35 @@ const subscriptionReducer = (subscription, { type, payload }) => {
   }
 }
 
+const getSubscriptingPressIds = (subscription) => {
+  return subscription.map(press => press.id);
+}
+
 const App = props => {
+  const [pressFilter, setPressFilter] = useState(constants.PRESS_FILTER_ALL);
+  const [viewType, setViewType] = useState(constants.VIEW_TYPE_LIST);
   const [pressIndex, setPressIndex] = useState(0);
   const [page, setPage] = useState(0);
-  const [viewType, setViewType] = useState(constants.VIEW_TYPE_LIST);
   const [subscription, dispatch] = useReducer(subscriptionReducer, [
     { id: '055' },
     { id: '057' },
     { id: '073' },
   ]);
+  const [pressData, setPressData] = useState(pressListData);
 
-  const pressIds = pressListData.map(press => press.id);
-  const maxPage = Math.ceil(pressListData.length / 18)
+  const filterPressAll = () => {
+    setPressFilter(constants.PRESS_FILTER_ALL);
+    setPressData(pressListData);
+  }
+  const filterPressMy = () => {
+    setPressFilter(constants.PRESS_FILTER_MY);
+    let subscriptionPressIds = getSubscriptingPressIds(subscription);
+    setPressData(pressData.filter(press => subscriptionPressIds.includes(press.id)));
+  }
+
+  console.log(pressData);
+  const pressIds = pressData.map(press => press.id);
+  const maxPage = Math.ceil(pressData.length / 18)
 
   const goToPrevPress = () => {
     if (pressIndex > 0) {
@@ -150,11 +167,13 @@ const App = props => {
   };
 
   return (
-    <SubscriptionContext.Provider value={{subscription, dispatch}}>
+    // <SubscriptionContext.Provider value={{subscription, dispatch}}>
       <Container>
         <Menubar>
           <PressFilter>
-            PressFilter
+            뉴스스탠드 > {pressFilter}
+            <button onClick={filterPressAll}>전체 언론사</button>
+            <button onClick={filterPressMy}>MY 뉴스</button>
           </PressFilter>
           <ViewControl>
             <ViewType>
@@ -169,12 +188,12 @@ const App = props => {
         </Menubar>
         <Contents
           viewType={viewType}
-          pressListData={pressListData}
+          pressListData={pressData}
           pressId={pressIds[pressIndex]}
           page={page}
         />
       </Container>
-    </SubscriptionContext.Provider>
+    // </SubscriptionContext.Provider>
   );
 };
 

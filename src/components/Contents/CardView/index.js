@@ -14,23 +14,13 @@ const CardViewBox = styled.div`
   position: relative;
 `;
 
-const getSubscriptingPressIds = (subscription) => {
-  return subscription.map(press => press.id);
-}
-
 const CardView = (props) => {
-  const subscriptionContext = useContext(SubscriptionContext);
-  // console.log(`subscription`);
-  // console.log(subscriptionContext.subscription);
   const {pressListData, page} = props;
-  const subscriptionPressIds = getSubscriptingPressIds(subscriptionContext.subscription);
   const pressCardList = [];
   pressListData.map((press, index) => {
     if (
       index >= page * constants.PRESS_COUNT_PER_PAGE &&
-      index < (page + 1) * constants.PRESS_COUNT_PER_PAGE &&
-      // if mypage,
-      subscriptionPressIds.includes(press.id)
+      index < (page + 1) * constants.PRESS_COUNT_PER_PAGE
     ) {
       pressCardList.push(
         <PressCard
