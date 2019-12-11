@@ -62,10 +62,8 @@ const subscriptionReducer = (subscription, { type, payload }) => {
   switch (type) {
     case 'subscribe':
       return [...subscription, { id: payload }];
-      return;
     case 'unsubscribe':
       return subscription.filter(press => press.id !== payload);
-      return;
     default:
       break;
   }
@@ -80,7 +78,7 @@ const App = props => {
   const [viewType, setViewType] = useState(constants.VIEW_TYPE_LIST);
   const [pressIndex, setPressIndex] = useState(0);
   const [page, setPage] = useState(0);
-  const [subscription, dispatch] = useReducer(subscriptionReducer, [
+  const [subscription, dispatchSubscription] = useReducer(subscriptionReducer, [
     { id: '055' },
     { id: '057' },
     { id: '073' },
@@ -169,33 +167,33 @@ const App = props => {
   };
 
   return (
-    // <SubscriptionContext.Provider value={{subscription, dispatch}}>
-      <Container>
-        <Menubar>
-          <PressFilter>
-            뉴스스탠드 > {pressFilter}
-            <button onClick={filterPressAll}>전체 언론사</button>
-            <button onClick={filterPressMy}>MY 뉴스</button>
-          </PressFilter>
-          <ViewControl>
-            <ViewType>
-              <button onClick={changeToCardView}>CARD</button>
-              <button onClick={changeToListView}>LIST</button>
-            </ViewType>
-            <PrevNext>
-              <Prev><button onClick={handlePrevButton}>Prev</button></Prev>
-              <Next><button onClick={handleNextButton}>Next</button></Next>
-            </PrevNext>
-          </ViewControl>
-        </Menubar>
+    <Container>
+      <Menubar>
+        <PressFilter>
+          뉴스스탠드 > {pressFilter}
+          <button onClick={filterPressAll}>전체 언론사</button>
+          <button onClick={filterPressMy}>MY 뉴스</button>
+        </PressFilter>
+        <ViewControl>
+          <ViewType>
+            <button onClick={changeToCardView}>CARD</button>
+            <button onClick={changeToListView}>LIST</button>
+          </ViewType>
+          <PrevNext>
+            <Prev><button onClick={handlePrevButton}>Prev</button></Prev>
+            <Next><button onClick={handleNextButton}>Next</button></Next>
+          </PrevNext>
+        </ViewControl>
+      </Menubar>
+      <SubscriptionContext.Provider value={{subscription, dispatchSubscription}}>
         <Contents
           viewType={viewType}
           pressListData={pressData}
           pressId={pressIds[pressIndex]}
           page={page}
         />
-      </Container>
-    // </SubscriptionContext.Provider>
+      </SubscriptionContext.Provider>
+    </Container>
   );
 };
 

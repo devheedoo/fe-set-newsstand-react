@@ -41,7 +41,7 @@ const PressList = (props) => {
 
 const Press = (props) => {
   const {press, isHighlighting} = props;
-  const fontColor = isHighlighting ? 'blue' : 'black';
+  const fontColor = isHighlighting ? 'red' : 'black';
   return (
     <li style={{ color: fontColor }}>
       {press.company}
