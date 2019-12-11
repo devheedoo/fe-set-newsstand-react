@@ -36,30 +36,22 @@ $ yarn start
 
 ![make-styled-components](./history/make-styled-components.png)
 
-### 3. File Structure
+### 3. Implement Subsciption
 
-기능별로 분류하기 (기사 상세보기는 구현하지 않음)
+```react
+// App.js
+const [pressFilter, setPressFilter] = useState(constants.PRESS_FILTER_ALL);
+const [viewType, setViewType] = useState(constants.VIEW_TYPE_LIST);
+const [pressIndex, setPressIndex] = useState(0);
+const [page, setPage] = useState(0);
+const [subscription, dispatchSubscription] = useReducer(subscriptionReducer, [
+{ id: '055' },
+{ id: '057' },
+{ id: '073' },
+]);
+const [pressData, setPressData] = useState(pressListData);
+```
 
-Data:
-- loadCategoryList()
-- loadPressList()
-- loadMyPressList()
-- loadNewsList(pressId)
-- subscribe(pressId)
-- unsubscribe(pressId)
+![make-list-view](./history/make-list-view.png)
 
-UI:
-- setMode(all | my)
-- setViewType(card | list)
-- setPress(pressId) / setPressListPage(pageNumber)
-
-결론:
-- api/
-- components/
-    - Menubar/
-        - LeftMenu/
-        - RightMenu/
-    - Contents/
-        - ListView/
-        - CardView/
-
+![make-card-view](./history/make-card-view.png)
