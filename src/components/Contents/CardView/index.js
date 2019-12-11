@@ -1,7 +1,8 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import styled, { css } from 'styled-components';
 import PressCard from './PressCard';
 import * as constants from '../../constants';
+import SubscriptionContext from '../../SubscriptionContext';
 
 const CardViewBox = styled.div`
   height: 200px;
@@ -14,6 +15,9 @@ const CardViewBox = styled.div`
 `;
 
 const CardView = (props) => {
+  const subscriptionContext = useContext(SubscriptionContext);
+  // console.log(`subscription`);
+  // console.log(subscriptionContext.subscription);
   const {pressListData, page} = props;
   const pressCardList = [];
   pressListData.map((press, index) => {

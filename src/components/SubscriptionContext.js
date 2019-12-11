@@ -1,18 +1,11 @@
 import React from 'react';
 
-const subscriptionReducer = (subscription, { type, payload }) => {
-  switch (type) {
-    case 'subscribe':
-      return [...subscription, { id: payload }];
-      return;
-    case 'unsubscribe':
-      return subscription.filter(press => press.id !== payload);
-      return;
-    default:
-      break;
-  }
-}
-
-const SubscriptionContext = React.createContext();
+const SubscriptionContext = React.createContext({
+  subscription: [
+    { id: '055' },
+    { id: '057' },
+    { id: '073' },
+  ]
+});
 
 export default SubscriptionContext;

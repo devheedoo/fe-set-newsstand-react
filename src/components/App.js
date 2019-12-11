@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useReducer } from 'react';
 import styled, { css } from 'styled-components';
 import pressListData from '../api/pressListData';
 import Contents from './Contents';
@@ -58,20 +58,28 @@ const Next = styled.div`
   flex: 0 0 45px;
 `;
 
+const subscriptionReducer = (subscription, { type, payload }) => {
+  switch (type) {
+    case 'subscribe':
+      return [...subscription, { id: payload }];
+      return;
+    case 'unsubscribe':
+      return subscription.filter(press => press.id !== payload);
+      return;
+    default:
+      break;
+  }
+}
+
 const App = props => {
   const [pressIndex, setPressIndex] = useState(0);
   const [page, setPage] = useState(0);
   const [viewType, setViewType] = useState(constants.VIEW_TYPE_LIST);
-  const [subscription, setSubscription] = useState([
+  const [subscription, dispatch] = useReducer(subscriptionReducer, [
     { id: '055' },
     { id: '057' },
     { id: '073' },
   ]);
-
-  const dispatch = {
-    type: 'subscribe',
-    payload: '904',
-  }
 
   const pressIds = pressListData.map(press => press.id);
   const maxPage = Math.ceil(pressListData.length / 18)
