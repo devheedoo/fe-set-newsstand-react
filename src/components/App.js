@@ -93,11 +93,13 @@ const App = props => {
   }
   const filterPressMy = () => {
     setPressFilter(constants.PRESS_FILTER_MY);
-    let subscriptionPressIds = getSubscriptingPressIds(subscription);
+    setPressIndex(0);
+    setPage(0);
+    const subscriptionPressIds = getSubscriptingPressIds(subscription);
     setPressData(pressData.filter(press => subscriptionPressIds.includes(press.id)));
   }
 
-  console.log(pressData);
+  // console.log(pressData);
   const pressIds = pressData.map(press => press.id);
   const maxPage = Math.ceil(pressData.length / 18)
 
